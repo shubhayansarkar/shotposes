@@ -29,7 +29,7 @@ def dblist(img_name, imgshape, pxlist, pylist, shot,fields):
             itemss[f'{fields[i]}']=its[i]
         itemss['shot']=shot
 
-        # print(itemss)
+        # print(its)
         # print(its)
         return itemss
     except:
@@ -40,23 +40,25 @@ def dblist(img_name, imgshape, pxlist, pylist, shot,fields):
 
 
 def dbcreate(path):
+        #  fol='drive'
     for fol in os.listdir(path):
-         for file in os.listdir(f'{path}\{fol}'):
+         for file in os.listdir(f'{path}/{fol}'):
             shotname=fol
             picname=file
 
-            img = cv2.imread(f'{path}\{fol}\{file}')
+            img = cv2.imread(f'{path}/{fol}/{file}')
             frame = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
             pxlist, pylist = pose(frame)
             items=dblist(picname, frame.shape, pxlist, pylist, shotname,fields)
 
             if items is not None:
-                # mongo_db.mongo_insert(items)
+                # print(items)
+                mongo_db.mongo_insert(items)
                 print(f'done...{file}')
 
 
 
-path=r"F:\projects_22\data_fol\cricket_shots"
+path=r"/home/sarkarsar152ine/shotposes/cricket_shots"
 dbcreate(path)
 
 
